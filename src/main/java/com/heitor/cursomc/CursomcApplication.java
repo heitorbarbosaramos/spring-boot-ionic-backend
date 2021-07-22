@@ -1,6 +1,7 @@
 package com.heitor.cursomc;
 
 import com.heitor.cursomc.domain.*;
+import com.heitor.cursomc.enums.EstadoPagamento;
 import com.heitor.cursomc.enums.TipoCliente;
 import com.heitor.cursomc.reposotories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
 @SpringBootApplication
@@ -30,6 +34,12 @@ public class CursomcApplication implements CommandLineRunner {
 
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+
+	@Autowired
+	private PedidoRepository pedidoRepository;
+
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -74,5 +84,28 @@ public class CursomcApplication implements CommandLineRunner {
 		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
 
 		enderecoRepository.saveAll(Arrays.asList(e1, e2));
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+		Pedido ped1 = new Pedido(null, LocalDateTime.parse("2017-09-03 10:32", formatter), cli1, e1);
+		Pedido ped2 = new Pedido(null, LocalDateTime.parse("2017-10-10 19:35", formatter), cli1, e2);
+
+		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
+
+		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUIADO, ped1, 6);
+
+
+		DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+		Pagamento pagto2 = new PagamentoComBoleto(null , EstadoPagamento.PENDENTE, ped2,  LocalDate.parse("2017-09-20", formatterDate), null);
+
+		System.out.println("---> " + pagto1);
+		System.out.println("---> " + pagto2);
+
+		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
+
+		cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
+		clienteRepository.save(cli1);
+
 	}
 }
