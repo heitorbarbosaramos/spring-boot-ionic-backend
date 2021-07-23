@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,8 +32,8 @@ public class CategoriaResources {
     }
 
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    public ResponseEntity<?> insert(@RequestBody Categoria categoria){
-        categoria = serviceCategoria.insert(categoria);
+    public ResponseEntity<?> insert(@Valid @RequestBody CategoriaDTO categoriaDto){
+        Categoria categoria = serviceCategoria.insert(serviceCategoria.fromDto(categoriaDto));
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(categoria.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }

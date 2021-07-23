@@ -1,6 +1,7 @@
 package com.heitor.cursomc.services;
 
 import com.heitor.cursomc.domain.Categoria;
+import com.heitor.cursomc.domain.dto.CategoriaDTO;
 import com.heitor.cursomc.reposotories.CategoriaRepository;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,5 +56,10 @@ public class CategoriaService {
     public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
         return repo.findAll(pageRequest);
+    }
+
+    public Categoria fromDto(CategoriaDTO categoriaDto){
+        Categoria categoria = new Categoria(categoriaDto.getId(), categoriaDto.getNome());
+        return categoria;
     }
 }
