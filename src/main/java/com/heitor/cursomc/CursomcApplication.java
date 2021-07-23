@@ -41,6 +41,9 @@ public class CursomcApplication implements CommandLineRunner {
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
 
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
 	}
@@ -99,13 +102,15 @@ public class CursomcApplication implements CommandLineRunner {
 
 		Pagamento pagto2 = new PagamentoComBoleto(null , EstadoPagamento.PENDENTE, ped2,  LocalDate.parse("2017-09-20", formatterDate), null);
 
-		System.out.println("---> " + pagto1);
-		System.out.println("---> " + pagto2);
-
 		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
 
 		cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
 		clienteRepository.save(cli1);
 
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.0, 1, 2000.0);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.0, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.0, 1, 800.00);
+
+		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
 	}
 }
