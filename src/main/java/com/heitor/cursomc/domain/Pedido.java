@@ -21,11 +21,9 @@ public class Pedido implements Serializable {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime instate;
 
-    @JsonManagedReference
     @OneToOne(mappedBy = "pedido")
     private Pagamento pagamento;
 
-    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;

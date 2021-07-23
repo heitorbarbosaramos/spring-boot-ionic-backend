@@ -1,6 +1,7 @@
 package com.heitor.cursomc.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.heitor.cursomc.enums.EstadoPagamento;
 
 import javax.persistence.*;
@@ -16,7 +17,7 @@ public abstract class Pagamento implements Serializable {
     private Integer id;
     private EstadoPagamento estado;
 
-    @JsonBackReference
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "pedido_id")
     private Pedido pedido;

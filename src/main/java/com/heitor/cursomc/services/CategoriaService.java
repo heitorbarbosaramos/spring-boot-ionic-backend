@@ -4,6 +4,7 @@ import com.heitor.cursomc.domain.Categoria;
 import com.heitor.cursomc.reposotories.CategoriaRepository;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,5 +31,14 @@ public class CategoriaService {
         buscar(categoria.getId());
         categoria = repo.save(categoria);
         return categoria;
+    }
+
+    public void delete(Integer idCategoria){
+        Categoria categoria = buscar(idCategoria);
+        try {
+            repo.delete(categoria);
+        }catch (DataIntegrityViolationException e){
+            throw new DataIntegrityViolationException("Não é possivel excluir categoria com produtos: ");
+        }
     }
 }
