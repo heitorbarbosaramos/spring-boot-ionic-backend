@@ -3,7 +3,7 @@ package com.heitor.cursomc.enums;
 public enum EstadoPagamento {
 
     PENDENTE(1, "Pendente"),
-    QUIADO(2, "Cancelado"),
+    QUITADO(2, "Quitado"),
     CANCELADO(3, "Cancelado");
 
     private int cod;

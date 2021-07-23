@@ -95,7 +95,7 @@ public class CursomcApplication implements CommandLineRunner {
 
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 
-		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUIADO, ped1, 6);
+		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
 
 
 		DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
