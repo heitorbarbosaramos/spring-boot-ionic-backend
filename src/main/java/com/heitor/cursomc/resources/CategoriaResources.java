@@ -1,6 +1,7 @@
 package com.heitor.cursomc.resources;
 
 import com.heitor.cursomc.domain.Categoria;
+import com.heitor.cursomc.domain.dto.CategoriaDTO;
 import com.heitor.cursomc.services.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/categorias")
@@ -44,5 +47,12 @@ public class CategoriaResources {
     public ResponseEntity<?> delete(@PathVariable(value = "idCategoria") Integer idCategoria){
        serviceCategoria.delete(idCategoria);
         return ResponseEntity.noContent().build();
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<?> findAll(){
+        List<Categoria> lista = serviceCategoria.findAll();
+        List<CategoriaDTO> listaDTO = lista.stream().map(x-> new CategoriaDTO(x)).collect(Collectors.toList());
+        return ResponseEntity.ok(listaDTO);
     }
 }
