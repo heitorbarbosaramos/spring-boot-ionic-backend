@@ -25,4 +25,10 @@ public class CategoriaService {
         categoria = repo.save(categoria);
         return categoria;
     }
+
+    public Categoria update(Categoria categoria){
+        buscar(categoria.getId());
+        categoria = repo.save(categoria);
+        return categoria;
+    }
 }
