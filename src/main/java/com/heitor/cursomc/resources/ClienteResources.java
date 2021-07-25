@@ -2,13 +2,16 @@ package com.heitor.cursomc.resources;
 
 import com.heitor.cursomc.domain.Cliente;
 import com.heitor.cursomc.domain.dto.ClienteDTO;
+import com.heitor.cursomc.domain.dto.ClienteNewDTO;
 import com.heitor.cursomc.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/cliente")
@@ -19,6 +22,13 @@ public class ClienteResources {
     @Autowired
     public ClienteResources(ClienteService serviceCliente){
         this.serviceCliente = serviceCliente;
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<?> insertNewCliente(@RequestBody ClienteNewDTO clienteNewDTO){
+        Cliente cliente = serviceCliente.insert(clienteNewDTO);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(cliente.getId()).toUri();
+        return ResponseEntity.created(uri).build();
     }
 
     @RequestMapping(value = "/pages", method = RequestMethod.GET)
