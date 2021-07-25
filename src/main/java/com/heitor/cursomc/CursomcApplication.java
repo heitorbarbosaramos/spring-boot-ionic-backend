@@ -71,12 +71,30 @@ public class CursomcApplication implements CommandLineRunner {
 		Produto p1 = new Produto(null, "Computador", 2000.00);
 		Produto p2 = new Produto(null, "Impressora", 800.00);
 		Produto p3 = new Produto(null, "Mouse", 80.00);
+		Produto p4 = new Produto(null, "Dipirona", 02.90);
+		Produto p5 = new Produto(null, "Suco de Laranja", 09.00);
+		Produto p6 = new Produto(null, "Suco de Manga", 09.00);
+		Produto p7 = new Produto(null, "Ração cachorro", 20.00);
+		Produto p8 = new Produto(null, "Ração de cavalo", 120.00);
+		Produto p9 = new Produto(null, "Pente tira piolho", 06.00);
+		Produto p10 = new Produto(null, "Violino", 120.00);
+		Produto p11 = new Produto(null, "Violão", 80.00);
+		Produto p12 = new Produto(null, "Flauta", 30.00);
 
 		p1.getCategorias().addAll(Arrays.asList(cat1, cat2));
 		p2.getCategorias().addAll(Arrays.asList(cat1, cat2));
 		p3.getCategorias().addAll(Arrays.asList(cat2));
+		p4.getCategorias().addAll(Arrays.asList(cat5));
+		p5.getCategorias().addAll(Arrays.asList(cat11));
+		p6.getCategorias().addAll(Arrays.asList(cat11));
+		p7.getCategorias().addAll(Arrays.asList(cat9));
+		p8.getCategorias().addAll(Arrays.asList(cat9));
+		p9.getCategorias().addAll(Arrays.asList(cat9));
+		p10.getCategorias().addAll(Arrays.asList(cat14));
+		p11.getCategorias().addAll(Arrays.asList(cat14));
+		p12.getCategorias().addAll(Arrays.asList(cat14));
 
-		produtoRepository.saveAll(Arrays.asList(p1, p2, p3));
+		produtoRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12));
 
 		Estado est1 = new Estado(null, "Minas Gerais");
 		Estado est2 = new Estado(null, "São Paulos");
