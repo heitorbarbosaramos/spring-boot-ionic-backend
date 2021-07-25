@@ -1,24 +1,46 @@
 package com.heitor.cursomc.domain.dto;
 
+import com.heitor.cursomc.services.validation.ClienteInsert;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
+@ClienteInsert
 public class ClienteNewDTO implements Serializable {
 
+    @NotEmpty(message = "preenchimento obrigatório")
+    @Length(min = 5, max = 120, message = "nome deve conter de 4 e 120 caracteres")
     private String nome;
+    @Email(message = "email invalido")
     private String email;
+    @NotEmpty(message = "preenchimento obrigatório")
     private String cpfOuCnpj;
+    @NotNull(message = "preenchimento obrigatório")
     private Integer tipo;
 
+    @NotEmpty(message = "preenchimento obrigatório")
     private String logradouro;
+
+    @NotEmpty(message = "preenchimento obrigatório")
     private String numero;
+
     private String complemento;
+
+    @NotEmpty(message = "preenchimento obrigatório")
     private String bairro;
+
+    @NotEmpty(message = "preenchimento obrigatório")
     private String cep;
 
+    @NotEmpty(message = "preenchimento obrigatório")
     private String telefone1;
     private String telefone2;
     private String telefone3;
 
+    @NotNull(message = "preenchimento obrigatório")
     private Integer cidadeId;
 
     public String getNome() {

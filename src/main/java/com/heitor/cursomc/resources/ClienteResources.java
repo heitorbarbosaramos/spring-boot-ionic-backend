@@ -25,7 +25,7 @@ public class ClienteResources {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> insertNewCliente(@RequestBody ClienteNewDTO clienteNewDTO){
+    public ResponseEntity<?> insertNewCliente(@Valid @RequestBody ClienteNewDTO clienteNewDTO){
         Cliente cliente = serviceCliente.insert(clienteNewDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(cliente.getId()).toUri();
         return ResponseEntity.created(uri).build();
