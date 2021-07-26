@@ -1,5 +1,7 @@
 package com.heitor.cursomc.config;
 
+import com.heitor.cursomc.services.EmailService;
+import com.heitor.cursomc.services.SmtpEmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +28,13 @@ public class ProfileDevConfig {
         if(strateg.equals("create")){
             dbService.instantiateDataBaseTeste();
         }
-
         LOG.info("PROFILE DE DESENVOLVIMENTO");
 
-
-
         return true;
+    }
+
+    @Bean
+    public EmailService emailService(){
+        return new SmtpEmailService();
     }
 }
