@@ -62,6 +62,7 @@ public class PedidoService {
             ip.setPedido(obj);
         }
         serviceItemPedido.save(obj.getItens());
+        System.out.println(obj);
         return obj;
     }
 }
