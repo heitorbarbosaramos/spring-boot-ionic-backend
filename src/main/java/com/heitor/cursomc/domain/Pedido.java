@@ -21,7 +21,7 @@ public class Pedido implements Serializable {
     private Integer id;
 
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
-    private LocalDateTime instate;
+    private LocalDateTime instante;
 
     @OneToOne(mappedBy = "pedido")
     private Pagamento pagamento;
@@ -41,9 +41,9 @@ public class Pedido implements Serializable {
     public Pedido(){
     }
 
-    public Pedido(Integer id, LocalDateTime instate, Cliente cliente, Endereco enderecoDeEntrega) {
+    public Pedido(Integer id, LocalDateTime instante, Cliente cliente, Endereco enderecoDeEntrega) {
         this.id = id;
-        this.instate = instate;
+        this.instante = instante;
         this.cliente = cliente;
         this.enderecoDeEntrega = enderecoDeEntrega;
     }
@@ -63,12 +63,12 @@ public class Pedido implements Serializable {
         this.id = id;
     }
 
-    public LocalDateTime getInstate() {
-        return instate;
+    public LocalDateTime getInstante() {
+        return instante;
     }
 
-    public void setInstate(LocalDateTime instate) {
-        this.instate = instate;
+    public void setInstante(LocalDateTime instante) {
+        this.instante = instante;
     }
 
     public Pagamento getPagamento() {
@@ -124,7 +124,7 @@ public class Pedido implements Serializable {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm:ss");
 
         sb.append("Pedido número: ").append(id);
-        sb.append(", instante: ").append(getInstate().format(formatter));
+        sb.append(", instante: ").append(getInstante().format(formatter));
         sb.append(", cliente: ").append(getCliente().getNome());
         sb.append(", situação pagamento: ").append(getPagamento().getEstado().getDescricao());
         sb.append("\nDetalhes:\n");

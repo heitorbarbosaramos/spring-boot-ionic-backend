@@ -48,13 +48,13 @@ public class PedidoService {
     @Transactional
     public Pedido insert(Pedido obj) {
         obj.setId(null);
-        obj.setInstate(LocalDateTime.now());
+        obj.setInstante(LocalDateTime.now());
         obj.setCliente(serviceCliente.buscar(obj.getCliente().getId()));
         obj.getPagamento().setEstado(EstadoPagamento.PENDENTE);
         obj.getPagamento().setPedido(obj);
         if (obj.getPagamento() instanceof PagamentoComBoleto) {
             PagamentoComBoleto pagto = (PagamentoComBoleto) obj.getPagamento();
-            serviceBoleto.preenchimentoPagamentoComBoleto(pagto, obj.getInstate());
+            serviceBoleto.preenchimentoPagamentoComBoleto(pagto, obj.getInstante());
         }
         obj = repo.save(obj);
         servicePagamento.save(obj.getPagamento());
@@ -65,7 +65,7 @@ public class PedidoService {
             ip.setPedido(obj);
         }
         serviceItemPedido.save(obj.getItens());
-        serviceEmail.sendOrderConfirmationEmail(obj);
+        serviceEmail.sendOrderConfirmationHtmlEmail(obj);
         return obj;
     }
 }
