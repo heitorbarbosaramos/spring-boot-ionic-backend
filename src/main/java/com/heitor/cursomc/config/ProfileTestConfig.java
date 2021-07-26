@@ -1,5 +1,7 @@
 package com.heitor.cursomc.config;
 
+import com.heitor.cursomc.services.EmailService;
+import com.heitor.cursomc.services.MockEmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +26,10 @@ public class ProfileTestConfig {
         dbService.instantiateDataBaseTeste();
 
         return true;
+    }
+
+    @Bean
+    public EmailService emailService(){
+        return new MockEmailService();
     }
 }

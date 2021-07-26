@@ -27,14 +27,17 @@ public class PedidoService {
 
     private final ProdutoService serviceProduto;
 
+    private final EmailService serviceEmail;
+
     @Autowired
-    public PedidoService(PedidoRepository repo, BoletoService serviceBoleto, PagamentoService servicePagamento, ItemPedidoService serviceItemPedido, ClienteService serviceCliente, ProdutoService serviceProduto) {
+    public PedidoService(PedidoRepository repo, BoletoService serviceBoleto, PagamentoService servicePagamento, ItemPedidoService serviceItemPedido, ClienteService serviceCliente, ProdutoService serviceProduto, EmailService serviceEmail) {
         this.repo = repo;
         this.serviceBoleto = serviceBoleto;
         this.servicePagamento = servicePagamento;
         this.serviceItemPedido = serviceItemPedido;
         this.serviceCliente = serviceCliente;
         this.serviceProduto = serviceProduto;
+        this.serviceEmail = serviceEmail;
     }
 
     public Pedido buscar(Integer idPedido){
@@ -62,7 +65,7 @@ public class PedidoService {
             ip.setPedido(obj);
         }
         serviceItemPedido.save(obj.getItens());
-        System.out.println(obj);
+        serviceEmail.sendOrderConfirmationEmail(obj);
         return obj;
     }
 }
