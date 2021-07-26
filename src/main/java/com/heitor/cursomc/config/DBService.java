@@ -4,6 +4,8 @@ import com.heitor.cursomc.domain.*;
 import com.heitor.cursomc.enums.EstadoPagamento;
 import com.heitor.cursomc.enums.TipoCliente;
 import com.heitor.cursomc.reposotories.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +43,8 @@ public class DBService {
 
     @Autowired
     private ItemPedidoRepository itemPedidoRepository;
+
+    private final Logger LOG = LoggerFactory.getLogger(DBService.class);
 
     public void instantiateDataBaseTeste(){
         Categoria cat1 = new Categoria(null, "Informática");
@@ -134,5 +138,7 @@ public class DBService {
         ItemPedido ip3 = new ItemPedido(ped2, p2, 100.0, 1, 800.00);
 
         itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
+
+        LOG.info("DATA BASE TESTE CARREGADA");
     }
 }
