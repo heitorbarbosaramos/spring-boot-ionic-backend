@@ -13,6 +13,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,9 @@ public class ClienteService {
     private final EnderecoService serviceEndereco;
 
     private final CidadeService serviceCidade;
+
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
     @Autowired
     public ClienteService(ClienteRepository repo, EnderecoService serviceEndereco, CidadeService serviceCidade) {
@@ -39,7 +43,7 @@ public class ClienteService {
 
     @Transactional
     public Cliente insert(ClienteNewDTO clienteNewDTO){
-        Cliente cliente = new Cliente(null, clienteNewDTO.getNome(), clienteNewDTO.getEmail(), clienteNewDTO.getCpfOuCnpj(), TipoCliente.toEnum(clienteNewDTO.getTipo()));
+        Cliente cliente = new Cliente(null, clienteNewDTO.getNome(), clienteNewDTO.getEmail(), clienteNewDTO.getCpfOuCnpj(), TipoCliente.toEnum(clienteNewDTO.getTipo()), encoder.encode(clienteNewDTO.getSenha()));
         cliente.getTelefones().add(clienteNewDTO.getTelefone1());
         if(clienteNewDTO.getTelefone2() != null){
             cliente.getTelefones().add(clienteNewDTO.getTelefone2());

@@ -7,6 +7,7 @@ import com.heitor.cursomc.reposotories.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -43,6 +44,9 @@ public class DBService {
 
     @Autowired
     private ItemPedidoRepository itemPedidoRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
     private final Logger LOG = LoggerFactory.getLogger(DBService.class);
 
@@ -103,7 +107,7 @@ public class DBService {
 
         cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 
-        Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "583.315.950-41", TipoCliente.PESSOAFISICA);
+        Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "583.315.950-41", TipoCliente.PESSOAFISICA, encoder.encode("senha"));
 
         cli1.getTelefones().addAll(Arrays.asList("(21) 982123-92812", "(21) 938392-0932"));
 
