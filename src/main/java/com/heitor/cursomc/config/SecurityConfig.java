@@ -1,6 +1,7 @@
 package com.heitor.cursomc.config;
 
 import com.heitor.cursomc.security.JWTAuthenticationFilter;
+import com.heitor.cursomc.security.JWTAuthorizationFilter;
 import com.heitor.cursomc.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -48,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(PUBLIC_MATCHERS).permitAll()
                 .anyRequest().authenticated();
         httpSecurity.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+        httpSecurity.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
         httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
