@@ -67,6 +67,11 @@ public class ClienteService {
         return obj;
     }
 
+    public Cliente findByEmail(String email){
+        Cliente cliente = repo.findByEmail(email);
+        return cliente;
+    }
+
     public Cliente update(ClienteDTO clienteDTO){
         Cliente cliente = buscar(clienteDTO.getId());
         cliente.setNome(clienteDTO.getNome());
