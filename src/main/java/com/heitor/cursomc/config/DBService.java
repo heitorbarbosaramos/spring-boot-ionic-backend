@@ -2,6 +2,7 @@ package com.heitor.cursomc.config;
 
 import com.heitor.cursomc.domain.*;
 import com.heitor.cursomc.enums.EstadoPagamento;
+import com.heitor.cursomc.enums.Perfil;
 import com.heitor.cursomc.enums.TipoCliente;
 import com.heitor.cursomc.reposotories.*;
 import org.slf4j.Logger;
@@ -108,10 +109,14 @@ public class DBService {
         cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 
         Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "583.315.950-41", TipoCliente.PESSOAFISICA, encoder.encode("senha"));
+        Cliente cli2 = new Cliente(null, "Administrador do Sistema", "heitorhfbr@gmail.com", "367.110.530-52", TipoCliente.PESSOAFISICA, encoder.encode("senha"));
 
         cli1.getTelefones().addAll(Arrays.asList("(21) 982123-92812", "(21) 938392-0932"));
 
-        clienteRepository.saveAll(Arrays.asList(cli1));
+        cli2.addPerfil(Perfil.ADMIN);
+        cli2.getTelefones().addAll(Arrays.asList("(21) 982123-92812", "(21) 938392-0932"));
+
+        clienteRepository.saveAll(Arrays.asList(cli1, cli2));
 
         Endereco e1 = new Endereco(null, "Rua das flores", "300", "Apto 203", "Jardim", "38220834", cli1, c1);
         Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
