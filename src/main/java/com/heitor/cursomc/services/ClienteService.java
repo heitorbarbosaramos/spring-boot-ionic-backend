@@ -44,6 +44,11 @@ public class ClienteService {
         return repo.findAll(pageRequest);
     }
 
+    public Cliente save(Cliente cliente){
+        cliente = repo.save(cliente);
+        return cliente;
+    }
+
     @Transactional
     public Cliente insert(ClienteNewDTO clienteNewDTO){
         Cliente cliente = new Cliente(null, clienteNewDTO.getNome(), clienteNewDTO.getEmail(), clienteNewDTO.getCpfOuCnpj(), TipoCliente.toEnum(clienteNewDTO.getTipo()), encoder.encode(clienteNewDTO.getSenha()));
@@ -78,6 +83,9 @@ public class ClienteService {
 
     public Cliente findByEmail(String email){
         Cliente cliente = repo.findByEmail(email);
+        if(cliente == null){
+            throw new ObjectNotFoundException("Cliente não encontrado pelo email: " + email, ClienteService.class.getName());
+        }
         return cliente;
     }
 

@@ -1,5 +1,6 @@
 package com.heitor.cursomc.services;
 
+import com.heitor.cursomc.domain.Cliente;
 import com.heitor.cursomc.domain.Pedido;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -68,5 +69,19 @@ public abstract class AbstractEmailService implements EmailService{
         mmh.setText(htmlFromTemplatePedido(obj), true);
 
         return mimeMessage;
+    }
+
+    public void sendNewPasswordEmail(Cliente cliente, String newPass){
+        SimpleMailMessage sm = prepareNewPassWordEmail(cliente, newPass);
+        sendEmail(sm);
+    }
+
+    protected SimpleMailMessage prepareNewPassWordEmail(Cliente cliente, String newPass){
+        SimpleMailMessage sm = new SimpleMailMessage();
+        sm.setText(cliente.getEmail());
+        sm.setFrom(sender);
+        sm.setSubject("Solicitação de nova senha");
+        sm.setText("Sua nova senha: " + newPass);
+        return sm;
     }
 }
