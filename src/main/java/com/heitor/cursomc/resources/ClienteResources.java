@@ -7,6 +7,7 @@ import com.heitor.cursomc.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -31,6 +32,7 @@ public class ClienteResources {
         return ResponseEntity.created(uri).build();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping(value = "/pages", method = RequestMethod.GET)
     public ResponseEntity<?> findAll(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
@@ -55,6 +57,7 @@ public class ClienteResources {
         return ResponseEntity.ok(cliente);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping(value = "/{idCliente}", method = RequestMethod.DELETE)
     public ResponseEntity<?> delete(@PathVariable(value = "idCliente") Integer idCliente){
         serviceCliente.delete(idCliente);

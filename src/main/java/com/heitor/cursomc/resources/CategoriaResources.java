@@ -6,6 +6,7 @@ import com.heitor.cursomc.services.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -31,6 +32,7 @@ public class CategoriaResources {
         return ResponseEntity.ok(categoria);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     public ResponseEntity<?> insert(@Valid @RequestBody CategoriaDTO categoriaDto){
         Categoria categoria = serviceCategoria.insert(serviceCategoria.fromDto(categoriaDto));
@@ -38,6 +40,7 @@ public class CategoriaResources {
         return ResponseEntity.created(uri).build();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping(value = "/{idCategoria}", method = RequestMethod.PUT)
     public ResponseEntity<?> update(@PathVariable(value = "idCategoria") Integer idCategoria, @RequestBody Categoria categoria){
         categoria.setId(idCategoria);
@@ -45,6 +48,7 @@ public class CategoriaResources {
         return ResponseEntity.ok(categoria);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping(value = "/{idCategoria}", method = RequestMethod.DELETE)
     public ResponseEntity<?> delete(@PathVariable(value = "idCategoria") Integer idCategoria){
        serviceCategoria.delete(idCategoria);
