@@ -5,14 +5,17 @@ import com.heitor.cursomc.domain.Cliente;
 import com.heitor.cursomc.domain.Endereco;
 import com.heitor.cursomc.domain.dto.ClienteDTO;
 import com.heitor.cursomc.domain.dto.ClienteNewDTO;
+import com.heitor.cursomc.enums.Perfil;
 import com.heitor.cursomc.enums.TipoCliente;
 import com.heitor.cursomc.reposotories.ClienteRepository;
+import com.heitor.cursomc.security.UserSecuritySpring;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,6 +66,12 @@ public class ClienteService {
     }
 
     public Cliente buscar(Integer idCliente){
+
+        UserSecuritySpring userSecuritySpring = UserService.authenticated();
+        if(userSecuritySpring == null || !userSecuritySpring.hasRole(Perfil.ADMIN) && !idCliente.equals(userSecuritySpring.getId())){
+            throw new AuthorizationServiceException("Acesso negado");
+        }
+
         Cliente obj = repo.findById(idCliente).orElseThrow(()-> new ObjectNotFoundException("Cliente não encontrada", ClienteService.class.getName()));
         return obj;
     }

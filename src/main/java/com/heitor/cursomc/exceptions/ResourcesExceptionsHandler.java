@@ -5,6 +5,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -22,7 +23,13 @@ public class ResourcesExceptionsHandler {
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<StandartError> AccessDeniedException(AccessDeniedException e, HttpServletRequest request){
+    public ResponseEntity<StandartError> accessDeniedException(AccessDeniedException e, HttpServletRequest request){
+        StandartError err = new StandartError(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN.toString(), e.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
+    }
+
+    @ExceptionHandler(AuthorizationServiceException.class)
+    public ResponseEntity<StandartError> authorizationServiceException(AuthorizationServiceException e, HttpServletRequest request){
         StandartError err = new StandartError(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN.toString(), e.getMessage());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
     }
