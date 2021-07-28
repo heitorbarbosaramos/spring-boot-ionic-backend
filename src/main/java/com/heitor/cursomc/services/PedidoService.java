@@ -1,12 +1,18 @@
 package com.heitor.cursomc.services;
 
+import com.heitor.cursomc.domain.Cliente;
 import com.heitor.cursomc.domain.ItemPedido;
 import com.heitor.cursomc.domain.PagamentoComBoleto;
 import com.heitor.cursomc.domain.Pedido;
 import com.heitor.cursomc.enums.EstadoPagamento;
 import com.heitor.cursomc.reposotories.PedidoRepository;
+import com.heitor.cursomc.security.UserSecuritySpring;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,5 +73,17 @@ public class PedidoService {
         serviceItemPedido.save(obj.getItens());
         serviceEmail.sendOrderConfirmationHtmlEmail(obj);
         return obj;
+    }
+
+    public Page<Pedido> findPage(Integer pages, Integer linesPerPage, String orderBy, String direction){
+
+        UserSecuritySpring user = UserService.authenticated();
+        if(user == null){
+            throw new AuthorizationServiceException("Acesso negado");
+        }
+
+        PageRequest pageRequest = PageRequest.of(pages, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        Cliente cliente = serviceCliente.buscar(user.getId());
+        return repo.findByCliente(cliente, pageRequest);
     }
 }
