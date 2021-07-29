@@ -82,6 +82,14 @@ public class ClienteService {
     }
 
     public Cliente findByEmail(String email){
+
+        UserSecuritySpring userSecuritySpring = UserService.authenticated();
+        System.out.println(userSecuritySpring.getUsername());
+        System.out.println(userSecuritySpring.getAuthorities());
+        if(userSecuritySpring == null || !userSecuritySpring.hasRole(Perfil.ADMIN) && !email.equals(userSecuritySpring.getUsername())){
+            throw new AuthorizationServiceException("Acesso negado");
+        }
+
         Cliente cliente = repo.findByEmail(email);
         if(cliente == null){
             throw new ObjectNotFoundException("Cliente não encontrado pelo email: " + email, ClienteService.class.getName());
