@@ -11,6 +11,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.annotation.processing.FilerException;
+import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 
 @ControllerAdvice
@@ -42,10 +44,23 @@ public class ResourcesExceptionsHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<StandartError> validation(MethodArgumentNotValidException e, HttpServletRequest request){
-        ValidationError err = new ValidationError(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.toString(), "Error de validações");
+        ValidationError err = new ValidationError(HttpStatus.UNPROCESSABLE_ENTITY.value(), HttpStatus.UNPROCESSABLE_ENTITY.toString(), "Error de validações");
         for(FieldError x : e.getBindingResult().getFieldErrors()){
             err.setList(x.getField(), x.getDefaultMessage());
         }
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(err);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<StandartError> authorizationServiceException(AuthenticationException e, HttpServletRequest request){
+        StandartError err = new StandartError(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN.toString(), e.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
+    }
+
+    @ExceptionHandler(FilerException.class)
+    public ResponseEntity<StandartError> filerException(FilerException e, HttpServletRequest request){
+        StandartError err = new StandartError(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.toString(), e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
+
 }
